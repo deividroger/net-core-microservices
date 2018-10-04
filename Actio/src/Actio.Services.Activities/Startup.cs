@@ -39,6 +39,8 @@ namespace Action.Services.Activities
 
             services.AddScoped<IDatabaseSeeder, CustomMongoSeeder>();
 
+            services.AddScoped<IActivityService, ActivityService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

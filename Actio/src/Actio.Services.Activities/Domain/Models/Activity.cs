@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Actio.Common.Exceptions;
+using System;
 
 namespace Actio.Services.Activities.Domain.Models
 {
@@ -20,9 +21,14 @@ namespace Actio.Services.Activities.Domain.Models
         {
         }
 
-        protected Activity(Guid id, Category category,Guid userId,
+        public Activity(Guid id, Category category,Guid userId,
                            string name, string description,DateTime createAt )
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ActioException("empty_activity","Activity name cannot be null");
+            }
+
             Id = id;
             Category = category.Name;
             Name = name;
