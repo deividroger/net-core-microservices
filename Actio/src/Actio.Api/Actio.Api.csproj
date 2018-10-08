@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Actio.Common\Actio.Common.csproj" />
+    <ProjectReference Include="..\Actio.Services.Activities\Actio.Services.Activities.csproj" />
   </ItemGroup>
 
 </Project>

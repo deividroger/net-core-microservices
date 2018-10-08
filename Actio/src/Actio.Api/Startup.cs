@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Actio.Api.Handlers;
+using Actio.Api.Repositories;
 using Actio.Common.Auth;
 using Actio.Common.Events;
+using Actio.Common.Mongo;
 using Actio.Common.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,11 +36,17 @@ namespace Action.Api
 
 
             services.AddJwt(Configuration);
+            services.AddMongoDB(Configuration);
             services.AddRabbitMq(Configuration);
 
             services.AddScoped<IEventHandler<ActivityCreated>, ActivityCreatedHandler>();
 
-            
+            services.AddScoped<IEventHandler<UserCreated>, UserCreatedHandler>();
+
+            services.AddScoped<IEventHandler<UserAuthenticated>, UserAuthenticatedHandler>();
+
+            services.AddScoped<IActivityRepository, ActivityRepository>();
+
             
         }
 
