@@ -1,4 +1,6 @@
 ﻿using Actio.Common.Commands;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RawRabbit;
 using System;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 namespace Actio.Api.Controllers
 {
     [Route("{controller}")]
-    public class ActivitiesController:Controller
+    public class ActivitiesController : Controller
     {
 
         private readonly IBusClient _busClient;
@@ -28,5 +30,8 @@ namespace Actio.Api.Controllers
 
             return Accepted($"activities/{command.Id}");
         }
+        [HttpGet("")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult Get() => Content("Secured");
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Actio.Common.Auth;
 namespace Action.Services.Identity
 {
     public class Startup
@@ -32,6 +32,8 @@ namespace Action.Services.Identity
 
             services.AddLogging();
 
+            services.AddJwt(Configuration);
+
             services.AddRabbitMq(Configuration);
             services.AddMongoDB(Configuration);
 
@@ -40,6 +42,8 @@ namespace Action.Services.Identity
             services.AddScoped<IEncrypter, Encrypter>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
