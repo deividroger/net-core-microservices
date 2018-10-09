@@ -2,7 +2,6 @@
 using Actio.Common.Events;
 using Actio.Common.Exceptions;
 using Actio.Services.Activities.Services;
-using Microsoft.Extensions.Logging;
 using RawRabbit;
 using System;
 using System.Threading.Tasks;
@@ -13,23 +12,17 @@ namespace Actio.Services.Activities.Handlers
     {
         private readonly IBusClient _busClient;
         private readonly IActivityService _activityService;
-        private ILogger _logger;
+        
 
-        public CreateActivityHandler(IBusClient busClient, IActivityService activityService, ILogger logger)
+        public CreateActivityHandler(IBusClient busClient, IActivityService activityService)
         {
             _busClient = busClient;
             _activityService = activityService;
-            _logger = logger;
-
-
+           
         }
 
         public async Task HandleAsync(CreateActivity command)
         {
-            await Task.CompletedTask;
-
-            _logger.LogInformation($"Activity created: {command.Name}");
-
 
             try
             {
@@ -49,14 +42,14 @@ namespace Actio.Services.Activities.Handlers
 
                 await _busClient.PublishAsync(new CreateUserRejected(command.Id.ToString(), ex.Code, ex.Message));
 
-                _logger.LogError(ex.Message);
+                
             }
 
             catch (Exception ex)
             {
                 await _busClient.PublishAsync(new CreateUserRejected(command.Id.ToString(), "error", ex.Message));
 
-                _logger.LogError(ex.Message);
+                
             }
 
 

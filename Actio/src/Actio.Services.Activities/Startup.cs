@@ -28,7 +28,7 @@ namespace Action.Services.Activities
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
-            services.AddLogging();
+           
             services.AddMongoDB(Configuration);
             services.AddRabbitMq(Configuration);
 
@@ -57,10 +57,12 @@ namespace Action.Services.Activities
 
             app.UseHttpsRedirection();
 
-            app.ApplicationServices
-                .GetService<IDatabaseInitializer>()
-                .InitializeAsync();
 
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<IDatabaseInitializer>().InitializeAsync();
+            }
+            
             app.UseMvc();
         }
     }

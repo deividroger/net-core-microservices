@@ -7,11 +7,13 @@ namespace Action.Services.Identity
     {
         public static void Main(string[] args)
         {
+    
+
             ServiceHost.Create<Startup>(args)
-                .UseRabbitMq()
-                .SubscriberToCommand<CreateUser>()
-                .Build()
-                .Run();
+               .UseRabbitMq()
+               .SubscribeToCommand<CreateUser>()
+               .Build()
+               .Run();
         }
 
         

@@ -2,7 +2,7 @@
 
 namespace Actio.Api.Controllers
 {
-    [Route("")]
+    [Route("[controller]")]
     public class HomeController:Controller
     {
         [HttpGet("")]

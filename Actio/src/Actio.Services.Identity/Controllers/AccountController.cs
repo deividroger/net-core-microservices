@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Actio.Services.Identity.Controllers
 {
-    [Route("")]
+    [Route("[controller]")]
     public class AccountController:Controller
     {
         private readonly IUserService _userService;
@@ -15,6 +15,7 @@ namespace Actio.Services.Identity.Controllers
             _userService = userService;
         }
 
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthenticateUser command)
         => Json(await _userService.LoginAsync(command.Email, command.Password));
     }

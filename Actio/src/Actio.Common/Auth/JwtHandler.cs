@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Actio.Common.Auth
@@ -28,43 +29,33 @@ namespace Actio.Common.Auth
             _jwtHeader = new JwtHeader(_signingCredentials);
             _tokenValidationParameters = new TokenValidationParameters()
             {
-                    ValidateAudience = false,
-                    ValidIssuer = _options.Issuer,
-                    IssuerSigningKey = _issuerSigninKey
+                ValidateAudience = false,
+                ValidIssuer = _options.Issuer,
+                IssuerSigningKey = _issuerSigninKey
             };
 
         }
 
         public JsonWebToken Create(Guid userId)
         {
-            var nowUtc = DateTime.UtcNow;
-
-            var expires = nowUtc.AddMinutes(_options.ExpiryMinutes);
-
-            var centuryBegin = new DateTime(1970, 1, 1).ToUniversalTime();
-
-            var exp = (long)(new TimeSpan(expires.Ticks - centuryBegin.Ticks).TotalSeconds);
-
-            var now = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
-
-            var payload = new JwtPayload
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                {"sub",userId},
-                {"iss", _options.Issuer },
-                {"iat",now },
-                {"exp",exp},
-                {"unique_name",userId }
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, userId.ToString())
+                }),
+                Issuer = _options.Issuer,
+                Expires = DateTime.Now.AddDays(_options.ExpiryMinutes),
+                SigningCredentials = _signingCredentials
             };
 
-            var jwt = new JwtSecurityToken(_jwtHeader, payload);
-
-            var token = _jwtSecurityTokenHandler.WriteToken(jwt);
-
+            var token = _jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = _jwtSecurityTokenHandler.WriteToken(token);
 
             return new JsonWebToken
             {
-                Token = token,
-                Expires = exp
+                Token = tokenString
             };
         }
     }

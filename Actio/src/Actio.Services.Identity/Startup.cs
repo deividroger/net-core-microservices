@@ -31,19 +31,15 @@ namespace Action.Services.Identity
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddLogging();
-
             services.AddJwt(Configuration);
-
             services.AddRabbitMq(Configuration);
             services.AddMongoDB(Configuration);
-
-            services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
-
             services.AddScoped<IEncrypter, Encrypter>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +57,12 @@ namespace Action.Services.Identity
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            app.ApplicationServices.GetService<IDatabaseInitializer>().InitializeAsync();
+
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<IDatabaseInitializer>().InitializeAsync();
+            }
+
         }
     }
 }

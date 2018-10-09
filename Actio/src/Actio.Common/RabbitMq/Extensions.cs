@@ -15,15 +15,15 @@ namespace Actio.Common.RabbitMq
         public static Task WithCommandHandlerAssync<TCommand>(this IBusClient bus,
                                                              ICommandHandler<TCommand> handler)
                                                     where TCommand : ICommand
-        => bus.SubscribeAsync<TCommand>(msg => handler.HandleAsync(msg), 
-                                        ctx => ctx.UseConsumerConfiguration(cfg =>
+        => bus.SubscribeAsync<TCommand>(msg =>   handler.HandleAsync(msg), 
+                                        ctx => ctx.UseSubscribeConfiguration(cfg =>
                                         cfg.FromDeclaredQueue(q => q.WithName(GetQueueName<TCommand>()))));
 
         public static Task WithEventHandlerAssync<TEvent>(this IBusClient bus,
                                                              IEventHandler<TEvent> handler)
                                                     where TEvent : IEvent
         => bus.SubscribeAsync<TEvent>(msg => handler.HandleAsync(msg),
-                                        ctx => ctx.UseConsumerConfiguration(cfg =>
+                                        ctx => ctx.UseSubscribeConfiguration(cfg =>
                                         cfg.FromDeclaredQueue(q => q.WithName(GetQueueName<TEvent>()))));
 
 
@@ -40,6 +40,25 @@ namespace Actio.Common.RabbitMq
             section.Bind(options);
 
             var client = RawRabbitFactory.CreateSingleton( new RawRabbitOptions { ClientConfiguration = options });
+
+
+    //        var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
+    //        {
+    //            ClientConfiguration = new ConfigurationBuilder()
+    //.SetBasePath(Directory.GetCurrentDirectory())
+    //.AddJsonFile("rawrabbit.json")
+    //.Build()
+    //.Get<RawRabbitConfiguration>(),
+    //            Plugins = p => p
+    //              .UseProtobuf()
+    //              .UsePolly(c => c
+    //                  .UsePolicy(queueBindPolicy, PolicyKeys.QueueBind)
+    //                  .UsePolicy(queueDeclarePolicy, PolicyKeys.QueueDeclare)
+    //                  .UsePolicy(exchangeDeclarePolicy, PolicyKeys.ExchangeDeclare)
+    //              ),
+    //            DependencyInjection = ioc => ioc
+    //              .AddSingleton<IChannelFactory, CustomChannelFactory>()
+    //        });
 
 
             service.AddSingleton<IBusClient>(_ => client);

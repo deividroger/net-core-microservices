@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Actio.Common.Mongo
 
             var collection = await collectionCursor.ToListAsync();
 
-            if (collectionCursor.Any())
+            if (collection.Any())
             {
                 return;
             }
