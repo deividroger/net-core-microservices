@@ -15,7 +15,7 @@ namespace Actio.Services.Identity.Domain.Services
             return Convert.ToBase64String(pbkdf2.GetBytes(SaltSize));
         }
 
-        public string GetSalt(string value)
+        public string GetSalt()
         {
             var saltBytes = new byte[SaltSize];
             var rng = RandomNumberGenerator.Create();

@@ -47,7 +47,7 @@ namespace Actio.Services.Identity.Domain.Models
                 throw new ActioException("empy_user_password", "User password cannot be empty");
             }
 
-            Salt = encrypter.GetSalt(password);
+            Salt = encrypter.GetSalt();
 
             Password = encrypter.GetHash(password, Salt);
         }
