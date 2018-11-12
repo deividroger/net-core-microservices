@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
 using RawRabbit.Instantiation;
-using RawRabbit.Pipe;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ namespace Actio.Common.RabbitMq
         public static Task WithCommandHandlerAssync<TCommand>(this IBusClient bus,
                                                              ICommandHandler<TCommand> handler)
                                                     where TCommand : ICommand
-        => bus.SubscribeAsync<TCommand>(msg =>   handler.HandleAsync(msg), 
+        => bus.SubscribeAsync<TCommand>(msg => handler.HandleAsync(msg),
                                         ctx => ctx.UseSubscribeConfiguration(cfg =>
                                         cfg.FromDeclaredQueue(q => q.WithName(GetQueueName<TCommand>()))));
 
@@ -31,7 +30,7 @@ namespace Actio.Common.RabbitMq
         => $"{Assembly.GetEntryAssembly().GetName()}/{typeof(T).Name}";
 
 
-        public static void AddRabbitMq(this IServiceCollection service, IConfiguration configuration ) 
+        public static void AddRabbitMq(this IServiceCollection service, IConfiguration configuration)
         {
             var options = new RabbitMqOptions();
 
@@ -39,27 +38,7 @@ namespace Actio.Common.RabbitMq
 
             section.Bind(options);
 
-            var client = RawRabbitFactory.CreateSingleton( new RawRabbitOptions { ClientConfiguration = options });
-
-
-    //        var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
-    //        {
-    //            ClientConfiguration = new ConfigurationBuilder()
-    //.SetBasePath(Directory.GetCurrentDirectory())
-    //.AddJsonFile("rawrabbit.json")
-    //.Build()
-    //.Get<RawRabbitConfiguration>(),
-    //            Plugins = p => p
-    //              .UseProtobuf()
-    //              .UsePolly(c => c
-    //                  .UsePolicy(queueBindPolicy, PolicyKeys.QueueBind)
-    //                  .UsePolicy(queueDeclarePolicy, PolicyKeys.QueueDeclare)
-    //                  .UsePolicy(exchangeDeclarePolicy, PolicyKeys.ExchangeDeclare)
-    //              ),
-    //            DependencyInjection = ioc => ioc
-    //              .AddSingleton<IChannelFactory, CustomChannelFactory>()
-    //        });
-
+            var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions { ClientConfiguration = options });
 
             service.AddSingleton<IBusClient>(_ => client);
         }
