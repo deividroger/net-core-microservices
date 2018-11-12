@@ -15,11 +15,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actio.Services.Identity", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9958B664-2648-4F92-9829-16522AC1A5F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actio.Api.Tests", "tests\Actio.Api.Tests\Actio.Api.Tests\Actio.Api.Tests.csproj", "{EBBAD48E-FC98-4E15-828F-A2ACE47AD8DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actio.Api.Tests", "tests\Actio.Api.Tests\Actio.Api.Tests\Actio.Api.Tests.csproj", "{EBBAD48E-FC98-4E15-828F-A2ACE47AD8DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actio.Services.Activities.Tests", "tests\Actio.Services.Activities.Tests\Actio.Services.Activities.Tests\Actio.Services.Activities.Tests.csproj", "{2A862A6F-B885-48DC-844F-667D4981051D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actio.Services.Activities.Tests", "tests\Actio.Services.Activities.Tests\Actio.Services.Activities.Tests\Actio.Services.Activities.Tests.csproj", "{2A862A6F-B885-48DC-844F-667D4981051D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actio.Services.Identity.Tests", "tests\Actio.Services.Identity.Tests\Actio.Services.Identity.Tests\Actio.Services.Identity.Tests.csproj", "{85C1E5D1-4A5D-4705-8B7B-03B97DF94930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actio.Services.Identity.Tests", "tests\Actio.Services.Identity.Tests\Actio.Services.Identity.Tests\Actio.Services.Identity.Tests.csproj", "{85C1E5D1-4A5D-4705-8B7B-03B97DF94930}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{F08F2441-B75C-4F7C-BD35-CF3CD178EA41}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\docker-build.sh = scripts\docker-build.sh
+		scripts\docker-compose.yaml = scripts\docker-compose.yaml
+		scripts\dotnet-publish.sh = scripts\dotnet-publish.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
